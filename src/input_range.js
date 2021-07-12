@@ -11,6 +11,10 @@ export function Input(props){
         <input type="number" placeholder="Enter Range (Km)" onChange={OnChangeHandle} />
         <h1>{"Calculated distance: " + data.toString() + " Km"}</h1>
         <button onClick={() => OnButtonClicked(props)}>Display</button>
+        <ul>
+            {PartnersInRange(props.partners) //should be changed to "partners"
+            }
+        </ul>
         </div>
     ); 
 
@@ -55,6 +59,37 @@ export function Input(props){
         const del_sigma = Math.acos(a*b + c)
         const dist = r * del_sigma
         return dist
+    }
+
+    function PartnersInRange(partners){
+        //only works on one partner for now, and doesn't check range
+        return partners.map(DisplayPartner)
+    }
+
+    function DisplayPartner(partner){
+        //displays Partner company name, location(s) and address(es)
+        //partner =  {companyName, branches} branches is an array == [{location, address, coordinates}]
+        //display in the following format:
+        //company name
+        // for each office:
+        //  office#, address
+        return(
+            <li>
+                <h2 align="left">{partner.organization}</h2>
+                <ul align="left">
+                    {partner.branches.map((branch, index) => {
+                        return(//must label out-of-range office!
+                        <li>Office #{index+1},
+                        <ul>
+                            <li>Location: {branch.location}</li>
+                            <li>Address: {branch.address}</li>
+                        </ul>
+                        </li>
+                        );
+                    })}
+                </ul>
+            </li>
+        );
     }
 }
 

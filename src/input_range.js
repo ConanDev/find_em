@@ -1,16 +1,12 @@
 import React, {useState} from 'react';
 
 export function Input(props){
-    //"data" is the calculated distance
-    // const [data, setData] = useState("empty default data")
-    //"data2" is the maximum input range
     const [inputRange, setInputRange] = useState(0)
     const selfCoor = [51.5144636,-0.142571]
     const [inRangePartners, setInRangePartners] = useState(<div></div>)
     return(
         <div>
         <input type="number" placeholder="Enter Range (Km)" onChange={OnChangeHandle} />
-        {/* <h1>{"Calculated distance: " + data.toString() + " Km"}</h1> */}
         <button onClick={() => OnButtonClicked(props)}>Display</button>
         <ul>
             {inRangePartners}
@@ -111,7 +107,3 @@ export function Input(props){
         );
     }
 }
-
-/**Your API should read the list of partners (from the attached JSON file), and return the company names
- *  and addresses of the matching partners (with offices within the given range in kilometers) 
- * SORTED BY COMPANY NAME IN ASCENDING ORDER. */

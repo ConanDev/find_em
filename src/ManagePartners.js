@@ -9,9 +9,9 @@ export function DisplayStats(){
         //for each partner, we have "prop" =  {companyName, branches}
         //where branches is an array == [{location, address, coordinates}]
         let branches = []
-        let prop = {organization: organization, branches : branches} //assuming branches to be passed by ref!
+        let prop = {organization: organization, branches : branches}
         //this is the inner ForEach for the branches
-        const offices = p1.offices //did a mistake more than once: object[]
+        const offices = p1.offices
 
         offices.forEach(office => {
             //for each office, add its location, address, and coordinates

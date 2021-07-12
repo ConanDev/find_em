@@ -1,10 +1,12 @@
-let partners = require('./partners.json')
+import { Input } from './input_range';
+const partners = require('./partners.json')
 
 export function DisplayStats(){
     //display the first company only
-    let p1 = partners[0]
-    let keys = Object.keys(p1)
-    let companyName = p1.organization
+    const p1 = partners[0]
+    const keys = Object.keys(p1)
+    const organization = p1.organization
+    let coordinates = p1.offices[0].coordinates.split(',') //assuming to be only 1 office for now
     const listItems = keys.map((key) => 
     {
         let res = null
@@ -32,10 +34,11 @@ export function DisplayStats(){
 })
     return (
         <div>
-        <h1>{companyName}</h1>
+        <h1>{organization}</h1>
         <ul>
             {listItems}
         </ul>
+        <Input coordinates={coordinates}/>
         </div>
     );
 }

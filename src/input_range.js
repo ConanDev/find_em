@@ -1,36 +1,45 @@
 import React, {useState} from 'react';
 
 export function Input(props){
+    //"data" is the calculated distance
     const [data, setData] = useState("empty default data")
+    //"data2" is the maximum input range
     const [data2, setData2] = useState("empty default data (runtime)")
-    let inputText = "empty input textt"
+    let inputRange = null
     return(
         <div>
-        <input type="number" placeholder="Range (Km)" onChange={OnChangeHandle} />
-        <h1>{"Calculated distance: " + data}</h1>
+        <input type="number" placeholder="Enter Range (Km)" onChange={OnChangeHandle} />
+        <h1>{"Calculated distance: " + data.toString() + " Km"}</h1>
         <button onClick={() => OnButtonClicked(props)}>Display</button>
         </div>
     ); 
 
     function OnChangeHandle(inputData){
-        inputText = inputData.target.value
-        setData2(inputText)
+        inputRange = inputData.target.value
+        setData2(inputRange)
+        
     }
 
     function OnButtonClicked(props){
-        const dist = CalculateDistance(props)
+        const dist = CalculateDistance(props) //moved string conversion to later
         setData(dist)
+        const text = parseFloat(data) <= parseFloat(data2) ? "Company is in range" : "Company is outside of range"
+        alert(text)
     }
 
     function CalculateDistance(props){
         //bring json degree data from ManagePartners
+        /**
+         * What to do to handle all the companies?
+         * Get an array of objects
+         * each object is {companyName, offices} OR {companyName, [{location, address, coordinates}]}
+         */
         let selfCoor = [51.5144636,-0.142571]
         selfCoor = selfCoor.map(deg => DegreesToRadians(deg))
-        let targetCoor = props.coordinates
-        alert(typeof(targetCoor))
+        let targetCoor = props.coordinates.map(num => parseFloat(num, 10))
         targetCoor = targetCoor.map(deg => DegreesToRadians(deg))
-        const dist = GCD(selfCoor, targetCoor)
-        return dist
+        const dist = GCD(selfCoor, targetCoor) / 1000 //meters to Km
+        return dist.toFixed(2);
     }
 
     function DegreesToRadians(deg){

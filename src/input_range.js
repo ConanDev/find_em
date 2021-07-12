@@ -2,68 +2,68 @@ import React, {useState} from 'react';
 
 export function Input(props){
     //"data" is the calculated distance
-    const [data, setData] = useState("empty default data")
+    // const [data, setData] = useState("empty default data")
     //"data2" is the maximum input range
-    const [data2, setData2] = useState("empty default data (runtime)")
-    let inputRange = null
+    const [inputRange, setInputRange] = useState(0)
+    const selfCoor = [51.5144636,-0.142571]
+    const [inRangePartners, setInRangePartners] = useState(<div></div>)
     return(
         <div>
         <input type="number" placeholder="Enter Range (Km)" onChange={OnChangeHandle} />
-        <h1>{"Calculated distance: " + data.toString() + " Km"}</h1>
+        {/* <h1>{"Calculated distance: " + data.toString() + " Km"}</h1> */}
         <button onClick={() => OnButtonClicked(props)}>Display</button>
         <ul>
-            {PartnersInRange(props.partners) //should be changed to "partners"
-            }
+            {inRangePartners}
         </ul>
         </div>
     ); 
 
     function OnChangeHandle(inputData){
-        inputRange = inputData.target.value
-        setData2(inputRange)
-        
+        setInputRange(inputData.target.value)
     }
 
     function OnButtonClicked(props){
-        const dist = CalculateDistance(props) //moved string conversion to later
-        setData(dist)
-        const text = parseFloat(data) <= parseFloat(data2) ? "Company is in range" : "Company is outside of range"
-        alert(text)
-    }
-
-    function CalculateDistance(props){
-        //bring json degree data from ManagePartners
-        /**
-         * What to do to handle all the companies?
-         * Get an array of objects
-         * each object is {companyName, offices} OR {companyName, [{location, address, coordinates}]}
-         */
-        let selfCoor = [51.5144636,-0.142571]
-        selfCoor = selfCoor.map(deg => DegreesToRadians(deg))
-        let targetCoor = props.coordinates.map(num => parseFloat(num, 10))
-        targetCoor = targetCoor.map(deg => DegreesToRadians(deg))
-        const dist = GCD(selfCoor, targetCoor) / 1000 //meters to Km
-        return dist.toFixed(2);
+        setInRangePartners(PartnersInRange(props.partners))
     }
 
     function DegreesToRadians(deg){
         return deg * Math.PI / 180
     }
 
-    function GCD(p1, p2){
-        //calculates the Great Circle Distance between points p1 and p2
+    function GCD(_p1, _p2){
+        //calculates the Great Circle Distance between points _p1 and _p2
+        //the latter need to be converted to radians
         const r = 6371009 // earth mean radius => minimized errors
+        const p1 = _p1.map(DegreesToRadians)
+        const p2 = _p2.map(DegreesToRadians)
         const a = Math.sin(p1[1]) * Math.sin(p2[1])
         const b = Math.cos(p1[1]) * Math.cos(p2[1])
         const c = Math.cos(p1[0] - p2[0])
         const del_sigma = Math.acos(a*b + c)
         const dist = r * del_sigma
-        return dist
+        return dist / 1000 //meters to Km
     }
 
     function PartnersInRange(partners){
-        //only works on one partner for now, and doesn't check range
-        return partners.map(DisplayPartner)
+        //filters all partners according to range
+        //returns an array of in-range partners
+        const inRangePartners = partners.filter(CheckValidPartner)
+        return inRangePartners.map(DisplayPartner)
+    }
+
+    function CheckValidPartner(partner){
+        //check if a certain (single) partner is in-range
+        //must check all offices of this partner
+        //if one is in range, then true. if none, false
+        let isValid = false
+        for (const branch of partner.branches){
+            const dist = GCD(selfCoor, branch.coordinates.map(coor => parseFloat(coor)))
+            if(dist <= inputRange){
+                isValid = true
+                break
+            }
+        }
+        return isValid
     }
 
     function DisplayPartner(partner){

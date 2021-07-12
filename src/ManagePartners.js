@@ -8,14 +8,22 @@ export function DisplayStats(){
     const listItems = keys.map((key) => 
     {
         let res = null
-        if(key != 'offices'){
-            res = <li>{key}: {p1[key]}</li>
+        if(key !== 'offices'){
+            if(key!=='willWorkRemotely'){
+                //convert boolean to string
+                res = <li>{key}: {p1[key]}</li>
+            }
+            else{
+                res = <li>{key}: {p1[key] ? "Yes" : "No"}</li>
+            }
         }
         else{
+            //let's deal with offices later
             res = <li><ul>
                 {/* {p1[key].map((office, index) => {
                     <li>office #{index+1}</li>
                 })} */}
+                <li>hello</li>
                 <li>hello</li>
             </ul>
             </li>

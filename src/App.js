@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import { DisplayStats } from './ManagePartners';
 import './App.css';
 

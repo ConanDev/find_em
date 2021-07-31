@@ -20,6 +20,8 @@ export function Input(props){
 
     function OnButtonClicked(props){
         setInRangePartners(PartnersInRange(props.partners))
+        //API
+        //call url api/input_range
     }
 
     function DegreesToRadians(deg){

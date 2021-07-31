@@ -16,7 +16,7 @@
 // import { DisplayStats } from './ManagePartners';
 // import './App.css';
 const express = require('express')
-
+const portNum = 5000
 const api = require('./api')
 const app = express()
 const config = {
@@ -28,6 +28,6 @@ const config = {
 
 app.use('/api', api) // sample API Route
 
-app.listen(3000)
+app.listen(portNum)
 module.exports = app
 

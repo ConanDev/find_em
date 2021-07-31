@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import {Link} from 'react-router-dom'
+import Button from 'next'
 
 //FRONTEND VERSION
 export default function Input(){ //added default
@@ -11,6 +13,10 @@ export default function Input(){ //added default
         <div>
         <input type="number" placeholder="Enter Range (Km)" onChange={OnChangeHandle} />
         <button onClick={() => OnButtonClicked()}>Display</button>
+        <br/>
+        {/* <Link to="duckduckgo.com">
+            <button>ducky</button>
+             </Link> */}
         <ul>
             {inRangePartners}
         </ul>
@@ -26,7 +32,9 @@ export default function Input(){ //added default
         //setInRangePartners(PartnersInRange(props.partners))
         //API
         //call the url: /api/rangedata (or something similiar)
-        alert('button was clicked')
+        const url = "/api/" + inputRange.toString()
+        const apiPort = 5000
+        window.open("http://localhost:" + apiPort.toString() + url)
     }
     
     /*

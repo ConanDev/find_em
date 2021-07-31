@@ -1,12 +1,10 @@
 import React, {useState} from 'react';
-import {Link} from 'react-router-dom'
-import Button from 'next'
+//  import {ReturnValidPartners} from '../api/api'
 
 //FRONTEND VERSION
 export default function Input(){ //added default
     const [inputRange, setInputRange] = useState(0)
-    //<BE>
-    const selfCoor = [51.5144636,-0.142571]
+    //<BE> -- or is it?
     const [inRangePartners, setInRangePartners] = useState(<div></div>)
     //</BE>
     return(
@@ -14,9 +12,6 @@ export default function Input(){ //added default
         <input type="number" placeholder="Enter Range (Km)" onChange={OnChangeHandle} />
         <button onClick={() => OnButtonClicked()}>Display</button>
         <br/>
-        {/* <Link to="duckduckgo.com">
-            <button>ducky</button>
-             </Link> */}
         <ul>
             {inRangePartners}
         </ul>
@@ -30,73 +25,15 @@ export default function Input(){ //added default
     function OnButtonClicked(){
         //BE
         //setInRangePartners(PartnersInRange(props.partners))
+        //instead of this, use setInRangePartners(data received from api)
         //API
         //call the url: /api/rangedata (or something similiar)
         const url = "/api/" + inputRange.toString()
         const apiPort = 5000
         window.open("http://localhost:" + apiPort.toString() + url)
+        setInRangePartners(ReturnValidPartners())
     }
-    
-    /*
-    //BE
-    function DegreesToRadians(deg){
-        return deg * Math.PI / 180
-    }
-
-    function GCD(_p1, _p2){
-        //calculates the Great Circle Distance between points _p1 and _p2
-        //the latter need to be converted to radians
-        const r = 6371009 // earth mean radius => minimized errors
-        const p1 = _p1.map(DegreesToRadians)
-        const p2 = _p2.map(DegreesToRadians)
-        const a = Math.sin(p1[1]) * Math.sin(p2[1])
-        const b = Math.cos(p1[1]) * Math.cos(p2[1])
-        const c = Math.cos(p1[0] - p2[0])
-        const del_sigma = Math.acos(a*b + c)
-        const dist = r * del_sigma
-        return dist / 1000 //meters to Km
-    }
-
-    function PartnersInRange(partners){
-        //filters all partners according to range
-        //returns an array of in-range partners
-        //sorted according to company name
-        let inRangePartners = partners.filter(CheckValidPartner)
-        inRangePartners.forEach(EnsureValidOffices)
-        inRangePartners.sort(SortPartners)
-        return inRangePartners.map(DisplayPartner)
-    }
-
-    function CheckValidPartner(partner){
-        //check if a certain (single) partner is in-range
-        //must check all offices of this partner
-        //if one is in range, then true. if none, false
-        let isValid = false
-        for (const branch of partner.branches){
-            const dist = GCD(selfCoor, branch.coordinates.map(coor => parseFloat(coor)))
-            if(dist <= inputRange){
-                isValid = true
-                break
-            }
-        }
-        return isValid
-    }
-
-    function EnsureValidOffices(partner){
-        //only accept in-range offices of a certain partner
-        const validBranches = partner.branches.filter((branch) => {
-            return GCD(branch.coordinates, selfCoor) <= inputRange
-        })
-        let res = partner
-        res.branches = validBranches
-        return res
-    }
-
-    function SortPartners(p1, p2){
-        //sorts partners according to company name
-        return p1.organization < p2.organization ? -1 : 1;
-    }
-    */
+   
     function DisplayPartner(partner){
         //displays Partner company name, location(s) and address(es)
         //partner =  {organization (companyName), branches} 

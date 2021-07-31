@@ -1,17 +1,18 @@
+//Maen Saassouh ©
 import { DisplayStats } from './ManagePartners';
 import './App.css';
-//Maen Saassouh ©
+const express = require('express')
 
-function App() {
-  return (
-    <div className="App">
-      <h1>Welcome back, Chief!</h1>
-      <p align="left">Please enter the desired maximum range in kilometers. <br/>This will be used
-        to select the partners of our company falling in this range, and only display the in-range offices of the former.
-      </p>
-	  <DisplayStats />
-    </div>
-  );
+const api = require('./api')
+const app = express()
+const config = {
+  static: 'public', // Set static assets directory
+  logging: true
 }
 
-export default App;
+//BACKEND VERSION - transform into express without react
+
+app.use('/api', api) // sample API Route
+
+app.listen(5000)
+module.exports = app

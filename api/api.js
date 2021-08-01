@@ -47,12 +47,24 @@ Router.get('/:resource', (req, res) => {
     })
     validPartners = PartnersInRange(allCompanies)
     validPartners = JSON.stringify(validPartners)
-    fs.writeFile('validPartners.json', validPartners, (err) => {
-      if (err) {
-          throw err;
-      }
-      console.log("JSON data is saved.");
-  });
+
+    function Save(){
+      fs.writeFile('validPartners.json', validPartners, (err) => {
+        if (err) {
+            throw err;
+        }
+      });
+    }
+
+    function OnSuccess(){
+      console.log("JSON data is saved successfully.");
+    }
+
+   function OnFail(){
+     console.log("Saving json file failed.")
+   }
+   const myPromise = new Promise(Save)
+   myPromise.then(OnSuccess, OnFail)
 })
 
 

@@ -35,9 +35,10 @@ export default function Input(){ //added default
             validPartners = require('../api/validPartners.json')
             console.log("The valid partners are:\n")
             console.log(validPartners)
+            validPartners = validPartners.map(DisplayPartner)
+            setInRangePartners(validPartners)
         }
         setTimeout(Print, 500)
-        
     }
    
     function DisplayPartner(partner){

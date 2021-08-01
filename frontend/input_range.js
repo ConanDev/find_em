@@ -29,41 +29,15 @@ export default function Input(){ //added default
         //call the url: /api/rangedata (or something similiar)
         const url = "/api/" + inputRange.toString()
         const apiPort = 5000
-        // window.open("http://localhost:" + apiPort.toString() + url)
-        // //the file validPartners.json MUST exist (initiate to empty)
-        // //empty gives an error
-        // let validPartners = null
-        // fetch('../api/validPartners.json').then( (response) => {
-        //     return response.json()
-        // }).then((json) => {
-        //     validPartners = json
-        // })
         let validPartners = null
-        //fetch got rid of the new window entirely!
-        // fetch("http://localhost:" + apiPort.toString() + url, {mode : 'no-cors'})
-        // .then( () => {
-        //     validPartners = require('../api/validPartners.json')
-        // }).catch((err) => {
-        //     console.log('Fetch problem: ' + err.message);
-        //   })
-        async function JustDoIt(){
-            await fetch("http://localhost:" + apiPort.toString() + url, {mode : 'no-cors'})
-            
-        } 
-        let myPromise = new Promise(() => {
-            window.open("http://localhost:" + apiPort.toString() + url, {mode : 'no-cors'})
-        })
-        function success(){
+        fetch("http://localhost:" + apiPort.toString() + url, {mode : 'no-cors'})
+        function Print(){
             validPartners = require('../api/validPartners.json')
-            console.log('operation succeeded !!')
+            console.log("The valid partners are:\n")
+            console.log(validPartners)
         }
-        function fail(){
-            console.log("operation failed !!")
-        }
-        myPromise.then(success, fail)
-
-        console.log("The valid partners are:\n")
-        console.log(validPartners)
+        setTimeout(Print, 500)
+        
     }
    
     function DisplayPartner(partner){

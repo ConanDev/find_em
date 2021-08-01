@@ -48,25 +48,16 @@ Router.get('/:resource', (req, res) => {
     validPartners = PartnersInRange(allCompanies)
     validPartners = JSON.stringify(validPartners)
 
-    function Save(){
       fs.writeFile('validPartners.json', validPartners, (err) => {
         if (err) {
+            console.log("Saving json file failed.")
             throw err;
         }
+        else{
+           console.log("JSON data is saved successfully.");
+        }
       });
-    }
-
-    function OnSuccess(){
-      console.log("JSON data is saved successfully.");
-    }
-
-   function OnFail(){
-     console.log("Saving json file failed.")
-   }
-   const myPromise = new Promise(Save)
-   myPromise.then(OnSuccess, OnFail)
 })
-
 
 function DegreesToRadians(deg){
     return deg * Math.PI / 180

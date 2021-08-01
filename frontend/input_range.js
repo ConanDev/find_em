@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 //  import {ReturnValidPartners} from '../api/api'
-
 //FRONTEND VERSION
 export default function Input(){ //added default
     const [inputRange, setInputRange] = useState(0)
@@ -31,7 +30,7 @@ export default function Input(){ //added default
         const url = "/api/" + inputRange.toString()
         const apiPort = 5000
         window.open("http://localhost:" + apiPort.toString() + url)
-        setInRangePartners(ReturnValidPartners())
+        // setInRangePartners(ReturnValidPartners())
     }
    
     function DisplayPartner(partner){

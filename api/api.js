@@ -2,8 +2,7 @@
 //supposedly, output data (i.e. offices in range) should be sent back to
 //main page, for it (and not the api page) to display them. I am not sure of this yet...
 
-//so far, I am NOT using a different project for the api (i.e. create another node app)
-//because I am not using next, at least just for now
+// const fs = require('fs')
 
 const express = require('express')
 const Router = express.Router()
@@ -11,7 +10,8 @@ const selfCoor = [51.5144636,-0.142571]
 const partners = require('./partners.json')
 const allCompanies = DisplayStats()
 let validPartners
-
+const fs = require('fs')
+let inputRange = -1
 function ReturnValidPartners(){
   return validPartners
 }
@@ -40,13 +40,19 @@ function DisplayStats(){
 }
 
 Router.get('/:resource', (req, res) => {
-  const range = parseFloat(req.params.resource)
+  inputRange = parseFloat(req.params.resource)
   res.json({
-        data : range,
+        data : inputRange,
         confirmation : 'success'
     })
     validPartners = PartnersInRange(allCompanies)
-
+    validPartners = JSON.stringify(validPartners)
+    fs.writeFile('validPartners.json', validPartners, (err) => {
+      if (err) {
+          throw err;
+      }
+      console.log("JSON data is saved.");
+  });
 })
 
 
@@ -75,7 +81,7 @@ function DegreesToRadians(deg){
     let inRangePartners = partners.filter(CheckValidPartner)
     inRangePartners.forEach(EnsureValidOffices)
     inRangePartners.sort(SortPartners)
-    return inRangePartners.map(DisplayPartner)
+    return inRangePartners//.map(DisplayPartner) this is the frontend job
   }
   
   function CheckValidPartner(partner){
@@ -108,7 +114,9 @@ function DegreesToRadians(deg){
     return p1.organization < p2.organization ? -1 : 1;
   }
 
-// module.exports = Router
-// module.exports.funcExp = ReturnValidPartners
 module.exports = Router
-module.exports = ReturnValidPartners
+
+// module.exports = ReturnValidPartners
+// export {Router} //doesn't work
+// const x = ''
+// module.exports = x
